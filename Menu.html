@@ -24,6 +24,7 @@
 				var targetDom = document.getElementById("targetMenu");
 				nm = new nice_menu(targetDom);
 				
+				nm.distributionType = 1;
 				nm.delay = 50;
 				nm.gap = 10;
 				nm.nm_ItemsData = [
@@ -38,6 +39,31 @@
 					["Menu8", "#", "_self", "./img/8.ico"],
 					["Menu9", "#", "_self", "./img/9.ico"],
 					["Menu10", "#", "_self", "./img/ark.ico"]*/
+				];
+					
+				nm.nm_createMenu();
+			}
+			
+			function createMenu2()
+			{
+				var targetDom = document.getElementById("targetMenu");
+				nm = new nice_menu(targetDom);
+				
+				nm.initScale = 1.0;
+				nm.distributionType = 0;
+				nm.delay = 50;
+				nm.gap = 1;
+				nm.nm_ItemsData = [
+					["Menu1", "#", "_self", "./img/1.ico"],
+					["Menu2", "#", "_self", "./img/2.ico"],
+					["Menu3", "#", "_self", "./img/3.ico"],
+					["Menu4", "#", "_self", "./img/4.ico"],
+					["Menu5", "#", "_self", "./img/5.ico"],
+					["Menu6", "#", "_self", "./img/6.ico"],
+					["Menu7", "#", "_self", "./img/7.ico"],
+					["Menu8", "#", "_self", "./img/8.ico"],
+					["Menu9", "#", "_self", "./img/9.ico"],
+					["Menu10", "#", "_self", "./img/ark.ico"]
 				];
 					
 				nm.nm_createMenu();
@@ -63,7 +89,6 @@
 								<div><img src="./img/ark.ico"  title="菜单1"/></div>
 							</a>
 						</li>
-						<!--
 						<li id="nm_2" style="" class="li2">
 							<a href="#" target="_self" class="nmA">
 								<div><img src="./img/ark.ico" title="菜单2"/></div>
@@ -84,10 +109,10 @@
 								<div><img src="./img/ark.ico" /></div>
 							</a>
 						</li>
-						-->
 					</ul>
 				</div>
 				<button id="showMenu" class="MenuButton" onclick="createMenu()">显示菜单</button>
+				<button id="showMenu2" class="MenuButton" onclick="createMenu2()">显示菜单2</button>
 				<button id="test" class="MenuButton" onclick="test()">创建动画</button>
 			</div>
 		</div>

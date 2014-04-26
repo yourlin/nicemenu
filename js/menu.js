@@ -9,6 +9,7 @@
  */
 function nice_menu(Target)
 {
+	this.initScale = 0.5;
     this.delay = 1000;
     this.distributionType = 0; //默认0=averaged均匀分布，1=original原始分布
     this.gap = 1;              //2个扇形之间的间隙
@@ -17,7 +18,6 @@ function nice_menu(Target)
     this.liRotate = -10;    //影响扇形的旋转位置
     this.liSkew = 50;       //跟 this.aSkew 为反值时，才不会发生扭曲
 	this.nm_Target = Target;
-	this.nm_ItemCount = 1;
 	this.nm_ItemsData = new Array();
 	this.nm_ItemsData = [
 		["DemoTitle",	//Title
@@ -26,7 +26,7 @@ function nice_menu(Target)
 		 "1.png"]		//image's URL
 	];
 	
-	if(this.initialized == "undefined"){
+	if(typeof(this.initialized == "undefined")){
 		this.nm_createMenu = function()
 		{
 		    this.nm_Target.innerHTML = "";
@@ -38,7 +38,7 @@ function nice_menu(Target)
             
 		    switch(this.distributionType)
 		    {
-		        case 0:
+		        case 0:		//平均分布
 		        {
 		            var objSkew =   360 / itemCount - this.gap;
                     aSkew = objSkew - 90;
@@ -46,8 +46,14 @@ function nice_menu(Target)
                     aRotate =0 - ( (90 - objSkew) / 2 + 45);
                     break; 
 		        }
-		        case 1:
+		        case 1:		//原始分布
 		        {
+		        	/*
+		        	var objSkew =   this.aSkew;
+                    aSkew = objSkew;
+                    liSkew = 0 - aSkew;
+                    aRotate =0 - ( (90 - objSkew) / 2 + 45);
+                    */
 		            break;
 		        }
 		        default:
@@ -75,6 +81,8 @@ function nice_menu(Target)
                     }
                      case 1:
                     {
+                    	lir = (90 - this.liSkew + this.gap ) * i + liRotate;    
+                        lis = liSkew;
                         break;
                     }
                     default:
@@ -83,29 +91,30 @@ function nice_menu(Target)
                     }
                 }
                 
-                function liTransform(liNode, lir, lis)
+                function liTransform(liNode, lir, lis, initScale)
                 {
-                    liNode.style  = "transform:rotate(" + lir + "deg) skew(" + lis + "deg) scale(1);";
-                    liNode.style.cssText += "-webkit-transform:rotate(" + lir + "deg) skew(" + lis+ "deg) scale(1);";
-                    liNode.style.cssText += "-ms-transform:rotate(" + lir + "deg) skew(" + lis+ "deg) scale(1);";
-                    liNode.style.cssText += "-o-transform:rotate(" + lir + "deg) skew(" + lis+ "deg) scale(1);";
+                	var finalScale = 1.0 / initScale;
+                    liNode.style  = "transform:rotate(" + lir + "deg) skew(" + lis + "deg) scale(" + finalScale + ");";
+                    liNode.style.cssText += "-webkit-transform:rotate(" + lir + "deg) skew(" + lis+ "deg) scale(" + finalScale + ");";
+                    liNode.style.cssText += "-ms-transform:rotate(" + lir + "deg) skew(" + lis+ "deg) scale(" + finalScale + ");";
+                    liNode.style.cssText += "-o-transform:rotate(" + lir + "deg) skew(" + lis+ "deg) scale(" + finalScale + ");";
                 }
 			    
-			    setTimeout(liTransform, this.delay, liNode, lir, lis);
+			    setTimeout(liTransform, this.delay, liNode, lir, lis, this.initScale);
 			    
-                liNode.style  = "transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(1);";
-                liNode.style.cssText += "-webkit-transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(1);";
-                liNode.style.cssText += "-ms-transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(1);";
-                liNode.style.cssText += "-o-transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(1);";		    
+                liNode.style  = "transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(" + this.initScale + ");";
+                liNode.style.cssText += "-webkit-transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(" + this.initScale + ");";
+                liNode.style.cssText += "-ms-transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(" + this.initScale + ");";
+                liNode.style.cssText += "-o-transform:rotate(" + this.liRotate + "deg) skew(" + liSkew + "deg) scale(" + this.initScale + ");";		    
  
                 //<a></a>
 			    var aNode = document.createElement("a");
 			    aNode.href = item[1];
 			    aNode.target = item[2];
-			    aNode.style  = "transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(1);";
-			    aNode.style.cssText  += "-webkit-transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(1);";
-			    aNode.style.cssText  += "-ms-transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(1);";
-			    aNode.style.cssText  += "-o-transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(1);";
+			    aNode.style  = "transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(" + this.initScale + ");";
+			    aNode.style.cssText  += "-webkit-transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(" + this.initScale + ");";
+			    aNode.style.cssText  += "-ms-transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(" + this.initScale + ");";
+			    aNode.style.cssText  += "-o-transform: skew(" + aSkew  +  "deg) rotate(" + aRotate  +"deg)  scale(" + this.initScale + ");";
 			    
 			    //<img></img>
 			    var imgNode = document.createElement("img");
